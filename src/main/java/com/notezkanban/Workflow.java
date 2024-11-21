@@ -2,6 +2,7 @@ package com.notezkanban;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Workflow {
     String workflowId;
@@ -32,7 +33,20 @@ public class Workflow {
     }
 
     public void addLane(Lane lane) {
-        // Add stage to workflow
+        if (!checkRootStageIsStage(lane)) {
+            throw new RuntimeException("RootStage must be stage");
+        }
         lanes.add(lane);
+    }
+
+    public List<Lane> getLanes() {
+        return this.lanes;
+    }
+
+    private boolean checkRootStageIsStage(Lane lane) {
+        if (lanes.isEmpty()) {
+            return lane instanceof Stage;
+        }
+        return true;
     }
 }
