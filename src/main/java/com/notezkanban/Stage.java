@@ -1,16 +1,20 @@
 package com.notezkanban;
 
 public class Stage implements Lane {
-    String stageId;
-    String stageName;
+    private final LaneState state;
 
     public Stage(String stageId, String stageName) {
-        this.stageId = stageId;
-        this.stageName = stageName;
+        this.state = LaneState.create(stageId, stageName);
+
+    }
+
+    @Override
+    public LaneState getState() {
+        return state;
     }
 
     @Override
     public String getLaneId() {
-        return stageId;
+        return getState().getStageId();
     }
 }

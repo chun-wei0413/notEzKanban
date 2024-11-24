@@ -1,16 +1,19 @@
 package com.notezkanban;
 
 public class SwimLane implements Lane {
-    private String laneId;
-    private String laneName;
+    private final LaneState state;
 
     public SwimLane(String laneId, String laneName) {
-        this.laneId = laneId;
-        this.laneName = laneName;
+        state = LaneState.create(laneId, laneName);
+    }
+
+    @Override
+    public LaneState getState() {
+        return state;
     }
 
     @Override
     public String getLaneId() {
-        return this.laneId;
+        return getState().getStageId();
     }
 }
