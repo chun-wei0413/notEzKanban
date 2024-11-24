@@ -43,6 +43,7 @@ public class workflowTest {
         String laneId = "stageId";
         String laneName = "stageName";
 
+        //TODO: only use Lane to create stage or swimlane.
         Lane rootStage = new SwimLane(laneId, laneName);
         assertEquals(0, workflow.getLanes().size());
         assertThrows(RuntimeException.class, () -> {
