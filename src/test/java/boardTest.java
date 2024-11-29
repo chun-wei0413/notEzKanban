@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class boardTest {
+public class BoardTest {
 
     @Test
     public void createBoard() {
