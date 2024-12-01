@@ -2,9 +2,12 @@ package com.notezkanban;
 
 import com.notezkanban.exception.CardException;
 
+import java.util.UUID;
+
 public class Card {
     private String description;
     private CardType type;
+    private UUID cardId;
 
     public Card(String description, CardType type) {
         if (isCardInvalid(description)) {
@@ -12,6 +15,7 @@ public class Card {
         }
         this.description = description;
         this.type = type;
+        this.cardId = UUID.randomUUID();
     }
 
     private boolean isCardInvalid(String description) {
@@ -23,5 +27,9 @@ public class Card {
 
     public String getDescription() {
         return description;
+    }
+
+    public UUID getId() {
+        return cardId;
     }
 }
