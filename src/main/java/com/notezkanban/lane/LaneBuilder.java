@@ -1,4 +1,4 @@
-package com.notezkanban;
+package com.notezkanban.lane;
 
 public class LaneBuilder {
     private String laneId;

@@ -1,6 +1,6 @@
-package com.notezkanban;
+package com.notezkanban.card;
 
-import com.notezkanban.exception.CardException;
+import com.notezkanban.card.exception.CardException;
 
 import java.util.UUID;
 

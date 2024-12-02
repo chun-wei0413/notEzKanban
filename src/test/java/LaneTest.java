@@ -1,5 +1,5 @@
-import com.notezkanban.Lane;
-import com.notezkanban.Stage;
+import com.notezkanban.lane.Lane;
+import com.notezkanban.lane.Stage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

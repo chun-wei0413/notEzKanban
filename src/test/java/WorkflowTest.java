@@ -1,6 +1,6 @@
-import com.notezkanban.Lane;
-import com.notezkanban.Stage;
-import com.notezkanban.SwimLane;
+import com.notezkanban.lane.Lane;
+import com.notezkanban.lane.Stage;
+import com.notezkanban.lane.SwimLane;
 import com.notezkanban.Workflow;
 import org.junit.jupiter.api.Test;
 

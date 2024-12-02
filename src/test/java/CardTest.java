@@ -1,5 +1,10 @@
 import com.notezkanban.*;
-import com.notezkanban.exception.CardException;
+import com.notezkanban.card.Card;
+import com.notezkanban.card.CardFactory;
+import com.notezkanban.card.CardType;
+import com.notezkanban.lane.Lane;
+import com.notezkanban.lane.LaneBuilder;
+import com.notezkanban.card.exception.CardException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,19 +12,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CardTest {
     @Test
     public void createCard() {
-        Card card = new Card("card", CardType.Standard);
+        Card card = CardFactory.createCard("card", CardType.Standard);
         assertEquals("card", card.getDescription());
         assertEquals(CardType.Standard, card.getType());
     }
 
     @Test
     public void createCardWithEmptyDescription() {
-        assertThrows(CardException.class, () -> new Card("", CardType.Standard));
+        assertThrows(CardException.class, () -> CardFactory.createCard("", CardType.Standard));
     }
 
     @Test
     public void changeCardDescriptionToEmpty() {
-        Card card = new Card("initial description", CardType.Standard);
+        Card card = CardFactory.createCard("card", CardType.Standard);
 
         assertThrows(CardException.class, () -> card.changeDescription(""));
     }
@@ -27,7 +32,9 @@ public class CardTest {
 
     @Test
     public void changeCardDescription() {
-        Card card = new Card("card", CardType.Standard);
+        Card card = CardFactory.createCard("card", CardType.Standard);
+
+        assertEquals("card", card.getDescription());
 
         card.changeDescription("new description");
 
@@ -42,7 +49,7 @@ public class CardTest {
         String stageName2 = "rootStage2";
         Lane stage = createRootStage(stageId1, stageName1);
         Lane stage2 = createRootStage(stageId2, stageName2);
-        Card card = new Card("card", CardType.Standard);
+        Card card = CardFactory.createCard("card", CardType.Standard);
 
         stage.addCard(card);
         assertTrue(stage.getCard(card.getId()).isPresent());
@@ -63,7 +70,7 @@ public class CardTest {
         String stageName2 = "rootStage2";
         Lane sourceLane = createRootStage(stageId1, stageName1);
         Lane targetLane = createRootStage(stageId2, stageName2);
-        Card card = new Card("card", CardType.Standard);
+        Card card = CardFactory.createCard("card", CardType.Standard);
 
         Command moveCardCommand = new MoveCardCommand(sourceLane, targetLane, card);
 
@@ -76,7 +83,7 @@ public class CardTest {
         String stageId = "1";
         String stageName = "rootStage";
         Lane stage = createRootStage(stageId, stageName);
-        Card card = new Card("card", CardType.Standard);
+        Card card = CardFactory.createCard("card", CardType.Standard);
 
         stage.addCard(card);
         assertTrue(stage.getCard(card.getId()).isPresent());
@@ -95,8 +102,8 @@ public class CardTest {
         Lane sourceLane = createRootStage(stageId1, stageName1);
         Lane targetLane = createRootStage(stageId2, stageName2);
 
-        Card card1 = new Card("card1", CardType.Standard);
-        Card card2 = new Card("card2", CardType.Standard);
+        Card card1 = CardFactory.createCard("card1", CardType.Standard);
+        Card card2 = CardFactory.createCard("card2", CardType.Standard);
 
         sourceLane.addCard(card1);
         sourceLane.addCard(card2);

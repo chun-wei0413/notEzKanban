@@ -1,5 +1,8 @@
 package com.notezkanban;
 
+import com.notezkanban.card.Card;
+import com.notezkanban.lane.Lane;
+
 public class MoveCardCommand implements Command {
     private Lane source;
     private Lane destination;

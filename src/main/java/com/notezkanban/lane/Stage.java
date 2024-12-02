@@ -1,10 +1,11 @@
-package com.notezkanban;
+package com.notezkanban.lane;
 
-public class SwimLane implements Lane {
+public class Stage implements Lane {
     private final LaneState state;
 
-    public SwimLane(String laneId, String laneName) {
-        state = LaneState.create(laneId, laneName);
+    public Stage(String stageId, String stageName) {
+        this.state = LaneState.create(stageId, stageName);
+
     }
 
     @Override

@@ -1,4 +1,6 @@
-package com.notezkanban;
+package com.notezkanban.lane;
+
+import com.notezkanban.card.Card;
 
 import java.util.ArrayList;
 import java.util.List;
