@@ -38,10 +38,10 @@ public interface Lane {
         getState().getChildren().add(swimLane);
     }
 
-    default void moveCard(Lane stage2, Card card) {
-        deleteCard(card);
-        stage2.addCard(card);
-    }
+//    default void moveCard(Lane stage2, Card card) {
+//        deleteCard(card);
+//        stage2.addCard(card);
+//    }
 
     default void addCard(Card card) {
         getState().getCards().add(card);

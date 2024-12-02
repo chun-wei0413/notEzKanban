@@ -21,6 +21,7 @@ public class Card {
     private boolean isCardInvalid(String description) {
         return description.trim().isEmpty();
     }
+
     public CardType getType() {
         return type;
     }
@@ -31,5 +32,12 @@ public class Card {
 
     public UUID getId() {
         return cardId;
+    }
+
+    public void changeDescription(String newDescription) {
+        if (isCardInvalid(newDescription)) {
+            throw new CardException("Invalid card description");
+        }
+        description = newDescription;
     }
 }
