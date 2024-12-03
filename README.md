@@ -26,3 +26,6 @@ Team members:
 ## Technique
 
 ## Design Patterns in Our Code
+
+## ref
+[ezKanban](https://gitlab.com/TeddyChen/ezkanban_2020)
