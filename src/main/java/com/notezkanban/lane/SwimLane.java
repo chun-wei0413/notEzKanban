@@ -1,19 +1,45 @@
 package com.notezkanban.lane;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.notezkanban.Visitor;
+import com.notezkanban.card.Card;
+
 public class SwimLane implements Lane {
-    private final LaneState state;
+private String swimLaneId;
+    private String swimLaneName;
+    private List<Lane> children;
+    private List<Card> cards;
 
-    public SwimLane(String laneId, String laneName) {
-        state = LaneState.create(laneId, laneName);
-    }
-
-    @Override
-    public LaneState getState() {
-        return state;
+    public SwimLane(String swimLaneId, String swimLaneName) {
+        this.swimLaneId = swimLaneId;
+        this.swimLaneName = swimLaneName;
+        this.children = new ArrayList<>();
+        this.cards = new ArrayList<>();
     }
 
     @Override
     public String getLaneId() {
-        return getState().getStageId();
+        return swimLaneId;
+    }
+    @Override
+    public String getLaneName() {
+        return swimLaneName;
+    }
+
+    @Override
+    public List<Lane> getChildren() {
+        return children;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitLane(this);
+    }
+
+    @Override
+    public List<Card> getCards() {
+        return cards;
     }
 }

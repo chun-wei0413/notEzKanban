@@ -1,5 +1,6 @@
 package com.notezkanban;
 
+import com.notezkanban.card.Card;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
 
@@ -43,6 +44,11 @@ public class Workflow {
 
     public List<Lane> getLanes() {
         return this.lanes;
+    }
+
+    public void moveCard(Lane source, Lane destination, Card card){
+        source.deleteCard(card);
+        destination.addCard(card);
     }
 
     private boolean checkRootStageIsStage(Lane lane) {
