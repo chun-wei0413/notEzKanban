@@ -3,9 +3,7 @@ package com.notezkanban.lane;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.notezkanban.Visitor;
 import com.notezkanban.card.Card;
-import com.notezkanban.lane.Lane;
 
 public class Stage implements Lane {
     private String stageId;
@@ -32,11 +30,6 @@ public class Stage implements Lane {
     @Override
     public List<Lane> getChildren() {
         return children;
-    }
-
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitLane(this);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.notezkanban.lane;
 
-import com.notezkanban.Visitor;
 import com.notezkanban.card.Card;
+import com.notezkanban.card.CardType;
+import com.notezkanban.lane.exception.LaneException;
 
 import java.util.*;
 
@@ -9,7 +10,6 @@ public interface Lane {
     String getLaneId();
     String getLaneName();
     List<Lane> getChildren();
-    void accept(Visitor visitor);
 
     default Iterator<Lane> iterator() {
         return getChildren().iterator();
@@ -26,17 +26,31 @@ public interface Lane {
         return null;
     }
 
+    //notAllowStageAndSwimLaneInSameLane
     default void createStage(String stageId, String stageName) {
+        for (Lane lane : getChildren()) {
+            if (lane instanceof SwimLane) {
+                throw new LaneException("Cannot add a stage to a lane that contains swim lanes.");
+            }
+        }
+
         Lane stage = LaneBuilder.newInstance()
-            .laneId(stageId)
-            .laneName(stageName)
-            .stage()
-            .build();
+                .laneId(stageId)
+                .laneName(stageName)
+                .stage()
+                .build();
 
         getChildren().add(stage);
     }
 
+    //notAllowStageAndSwimLaneInSameLane
     default void createSwimLane(String swimLaneId, String swimLaneName) {
+        for (Lane lane : getChildren()) {
+            if (lane instanceof Stage) {
+                throw new LaneException("Cannot add a stage to a lane that contains swim lanes.");
+            }
+        }
+
         Lane swimLane = LaneBuilder.newInstance()
             .laneId(swimLaneId)
             .laneName(swimLaneName)
@@ -44,6 +58,15 @@ public interface Lane {
             .build();
 
         getChildren().add(swimLane);
+    }
+
+    default void createCard(String description, CardType type) {
+        if (!getChildren().isEmpty()) {
+            throw new LaneException("Cannot add cards to non-leaf lanes.");
+        }
+
+        Card card = new Card(description, type);
+        addCard(card);
     }
 
     default void addCard(Card card) {
@@ -62,4 +85,26 @@ public interface Lane {
         }
         return Optional.empty();
     }
+
+    default int getTotalCardCount() {
+        int totalCardCount = getCards().size();
+        for (Lane lane : getChildren()) {
+            //use recursion to get total card count
+            totalCardCount += lane.getTotalCardCount();
+        }
+        return totalCardCount;
+    }
+
+    default int getExpediteCardCount() {
+        int count = (int) getCards().stream()
+                .filter(card -> card.getType() == CardType.Expedite)
+                .count();
+
+        for (Lane child : getChildren()) {
+            count += child.getExpediteCardCount();
+        }
+
+        return count;
+    }
+
 }

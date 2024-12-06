@@ -1,9 +1,6 @@
 import com.notezkanban.card.Card;
-import com.notezkanban.card.CardFactory;
 import com.notezkanban.card.CardType;
-import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
-import com.notezkanban.lane.SwimLane;
 import com.notezkanban.Workflow;
 import org.junit.jupiter.api.Test;
 
@@ -13,57 +10,58 @@ public class WorkflowTest {
 
     @Test
     public void createWorkflow() {
-        String workflowId = "workflowId";
-        String workflowName = "workflowName";
-        Workflow workflow = new Workflow(workflowId, workflowName);
+        Workflow workflow = createWorkflow("workflowId", "workflowName");
 
-        assertEquals(workflowId, workflow.getWorkflowId());
-        assertEquals(workflowName, workflow.getWorkflowName());
+        assertEquals("workflowId", workflow.getWorkflowId());
+        assertEquals("workflowName", workflow.getWorkflowName());
+    }
+
+    @Test
+    public void renameWorkflow() {
+        Workflow workflow = createWorkflow("workflowId", "workflowName");
+
+        workflow.rename("newWorkflowName");
+
+        assertEquals("newWorkflowName", workflow.getWorkflowName());
+    }
+
+    @Test
+    public void renameWorkflowWithEmptyName() {
+        Workflow workflow = createWorkflow("workflowId", "workflowName");
+
+        assertThrows(IllegalArgumentException.class, () -> workflow.rename(""));
     }
 
     @Test
     public void addStageToWorkflow() {
-        String workflowId = "workflowId";
-        String workflowName = "workflowName";
-        Workflow workflow = new Workflow(workflowId, workflowName);
+        Workflow workflow = createWorkflow("workflowId", "workflowName");
+        Stage rootStage = createRootStage("stageId", "stageName");
 
-        String laneId = "stageId";
-        String laneName = "stageName";
+        workflow.addRootStage(rootStage);
 
-        Lane rootStage = new Stage(laneId, laneName);
-        workflow.addLane(rootStage);
-
-        assertEquals(rootStage, workflow.getLane(laneId));
+        assertEquals("stageName", workflow.getLane("stageId").get().getLaneName());
     }
 
     @Test
-    public void rootStageTypeMustBeStage() {
-        String workflowId = "wordflowId";
-        String workflowName = "workflowName";
-        Workflow workflow = new Workflow(workflowId, workflowName);
+    public void deleteStageFromWorkflow() {
+        Workflow workflow = createWorkflow("workflowId", "workflowName");
+        Stage rootStage = createRootStage("stageId", "stageName");
 
-        String laneId = "stageId";
-        String laneName = "stageName";
+        workflow.addRootStage(rootStage);
+        workflow.deleteLane("stageId");
 
-        //TODO: only use Lane to create stage or swimlane.
-        Lane rootStage = new SwimLane(laneId, laneName);
-        assertEquals(0, workflow.getLanes().size());
-        assertThrows(RuntimeException.class, () -> {
-            workflow.addLane(rootStage);
-        });
+        assertFalse(workflow.getLane("stageId").isPresent());
     }
 
     @Test
     public void moveCard() {
-        String workflowId = "wordflowId";
-        String workflowName = "workflowName";
-        Workflow workflow = new Workflow(workflowId, workflowName);
-        Lane source = createRootStage("lane1","source");
-        Lane destination = createRootStage("lane2","destination");
-        Card card = CardFactory.createCard("card", CardType.Standard);
+        Workflow workflow = createWorkflow("workflowId", "workflowName");
+        Stage source = createRootStage("lane1","source");
+        Stage destination = createRootStage("lane2","destination");
+        Card card = new Card("card", CardType.Standard);
 
-        workflow.addLane(source);
-        workflow.addLane(destination);
+        workflow.addRootStage(source);
+        workflow.addRootStage(destination);
         source.addCard(card);
 
         assertTrue(source.getCard(card.getId()).isPresent());
@@ -72,9 +70,11 @@ public class WorkflowTest {
         assertTrue(destination.getCard(card.getId()).isPresent());
     }
 
-    private Lane createRootStage(String id, String name) {
-        String stageId = id;
-        String stageName = name;
-        return new Stage(stageId, stageName);
+    private Workflow createWorkflow(String id, String name) {
+        return new Workflow(id, name);
+    }
+
+    private Stage createRootStage(String id, String name) {
+        return new Stage(id, name);
     }
 }

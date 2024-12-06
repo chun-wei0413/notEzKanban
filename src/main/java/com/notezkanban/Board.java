@@ -2,6 +2,7 @@ package com.notezkanban;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Board {
     String boardId;
@@ -11,6 +12,7 @@ public class Board {
     List<Workflow> workflows;
 
     public Board(String boardId, String boardName) {
+        checkBoardName(boardName);
         this.boardId = boardId;
         this.boardName = boardName;
         workflows = new ArrayList<>();
@@ -29,6 +31,7 @@ public class Board {
         if (isDeleted) {
             throw new IllegalStateException("Cannot rename a deleted board");
         }
+        checkBoardName(newBoardName);
         boardName = newBoardName;
     }
 
@@ -40,13 +43,18 @@ public class Board {
         workflows.add(workflow);
     }
 
-    public Workflow getWorkflow(String workflowId) {
+    public void deleteWorkflow(String workflowId) {
+        Workflow workflow = getWorkflow(workflowId).get();
+        workflows.remove(workflow);
+    }
+
+    public Optional<Workflow> getWorkflow(String workflowId) {
         for (Workflow workflow : workflows) {
             if (workflow.workflowId.equals(workflowId)) {
-                return workflow;
+                return Optional.of(workflow);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public void markAsDeleted() {
@@ -61,5 +69,10 @@ public class Board {
         return boardMembers;
     }
 
+    private void checkBoardName(String boardName) {
+        if(boardName.trim().isEmpty()){
+            throw new IllegalArgumentException("Board name cannot be empty");
+        }
+    }
 
 }

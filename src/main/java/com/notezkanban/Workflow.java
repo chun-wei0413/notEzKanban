@@ -6,44 +6,58 @@ import com.notezkanban.lane.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Workflow {
     String workflowId;
     String workflowName;
-    List<Lane> lanes;
+    //only allow stages to be added to the workflow
+    List<Stage> stages;
 
     public Workflow(String workflowId, String workflowName) {
+        checkWorkflowName(workflowName);
         this.workflowId = workflowId;
         this.workflowName = workflowName;
-        lanes = new ArrayList<>();
+        stages = new ArrayList<>();
     }
 
     public String getWorkflowName() {
         return workflowName;
     }
 
+    public void rename(String newWorkflowName) {
+        checkWorkflowName(newWorkflowName);
+        workflowName = newWorkflowName;
+    }
+
     public String getWorkflowId() {
         return workflowId;
     }
 
-    public Lane getLane(String laneId) {
-        for (Lane lane : lanes) {
-            if (lane.getLaneId().equals(laneId)) {
-                return lane;
+    public Optional<Stage> getLane(String laneId) {
+        for (Stage stage : stages) {
+            if (stage.getLaneId().equals(laneId)) {
+                return Optional.of(stage);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    public void addLane(Lane lane) {
-        if (!checkRootStageIsStage(lane)) {
-            throw new RuntimeException("RootStage must be stage");
+    public void addRootStage(Stage stage) {
+        stages.add(stage);
+    }
+
+    public void deleteLane(String laneId) {
+        for (Stage stage : stages) {
+            if (stage.getLaneId().equals(laneId)) {
+                stages.remove(stage);
+                break;
+            }
         }
-        lanes.add(lane);
     }
 
-    public List<Lane> getLanes() {
-        return this.lanes;
+    public List<Stage> getLanes() {
+        return this.stages;
     }
 
     public void moveCard(Lane source, Lane destination, Card card){
@@ -51,10 +65,9 @@ public class Workflow {
         destination.addCard(card);
     }
 
-    private boolean checkRootStageIsStage(Lane lane) {
-        if (lanes.isEmpty()) {
-            return lane instanceof Stage;
+    private void checkWorkflowName(String workflowName) {
+        if (workflowName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid workflow name");
         }
-        return true;
     }
 }

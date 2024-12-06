@@ -3,7 +3,6 @@ package com.notezkanban.lane;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.notezkanban.Visitor;
 import com.notezkanban.card.Card;
 
 public class SwimLane implements Lane {
@@ -31,11 +30,6 @@ private String swimLaneId;
     @Override
     public List<Lane> getChildren() {
         return children;
-    }
-
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitLane(this);
     }
 
     @Override

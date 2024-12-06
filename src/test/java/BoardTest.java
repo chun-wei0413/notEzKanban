@@ -4,42 +4,62 @@ import com.notezkanban.BoardRole;
 import com.notezkanban.Workflow;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
 
     @Test
     public void createBoard() {
-        String boardId = "boardId";
-        String boardName = "boardName";
-        Board board = new Board(boardId, boardName);
+        Board board = createBoard("boardId", "boardName");
 
         String adminUserId = "adminUserId";
         board.addBoardMember(new BoardMember(adminUserId, BoardRole.Admin));
 
-        assertEquals(boardId, board.getBoardId());
-        assertEquals(boardName, board.getBoardName());
+        assertEquals("boardId", board.getBoardId());
+        assertEquals("boardName", board.getBoardName());
         assertEquals(1, board.getMembers().size());
         assertEquals(adminUserId, board.getMembers().get(0).getUserId());
     }
 
     @Test
-    public void deletedABoard() {
-        String boardId = "boardId";
-        String boardName = "boardName";
-        Board board = new Board(boardId, boardName);
+    public void addWorkflowToBoard() {
+        Board board = createBoard("boardId", "boardName");
 
-        board.markAsDeleted();
+        String workflowId = "workflowId";
+        String workflowName = "workflowName";
 
-        assertEquals(true, board.isDeleted());
+        Workflow workflow = new Workflow(workflowId, workflowName);
+        board.addWorkflow(workflow);
+
+        assertEquals(workflowName, board.getWorkflow(workflowId).get().getWorkflowName());
     }
 
     @Test
-    public void renameABoard() {
-        String boardId = "boardId";
-        String boardName = "boardName";
-        Board board = new Board(boardId, boardName);
+    public void deletedBoard() {
+        Board board = createBoard("boardId", "boardName");
+
+        board.markAsDeleted();
+
+        assertTrue(board.isDeleted());
+    }
+
+    @Test
+    public void deletedWorkflowFromBoard() {
+        Board board = createBoard("boardId", "boardName");
+
+        String workflowId = "workflowId";
+        String workflowName = "workflowName";
+
+        Workflow workflow = new Workflow(workflowId, workflowName);
+        board.addWorkflow(workflow);
+        board.deleteWorkflow(workflowId);
+
+        assertFalse(board.getWorkflow(workflowId).isPresent());
+    }
+
+    @Test
+    public void renameBoard() {
+        Board board = createBoard("boardId", "boardName");
 
         String newBoardName = "newBoardName";
         board.rename(newBoardName);
@@ -48,25 +68,17 @@ public class BoardTest {
     }
 
     @Test
-    public void addWorkflowToBoard() {
-        String boardId = "boardId";
-        String boardName = "boardName";
-        Board board = new Board(boardId, boardName);
+    public void renameABoardWithEmptyName() {
+        Board board = createBoard("boardId", "boardName");
 
-        String workflowId = "workflowId";
-        String workflowName = "workflowName";
-
-        Workflow workflow = new Workflow(workflowId, workflowName);
-        board.addWorkflow(workflow);
-
-        assertEquals(workflow, board.getWorkflow(workflowId));
+        assertThrows(IllegalArgumentException.class, () -> {
+            board.rename("");
+        });
     }
 
     @Test
     public void renameABoardWhichIsDeleted() {
-        String boardId = "boardId";
-        String boardName = "boardName";
-        Board board = new Board(boardId, boardName);
+        Board board = createBoard("boardId", "boardName");
 
         board.markAsDeleted();
 
@@ -77,14 +89,16 @@ public class BoardTest {
 
     @Test
     public void addABoardMember() {
-        String boardId = "boardId";
-        String boardName = "boardName";
-        Board board = new Board(boardId, boardName);
+        Board board = createBoard("boardId", "boardName");
 
         String userId = "userId";
         board.addBoardMember(new BoardMember(userId, BoardRole.Member));
 
         assertEquals(1, board.getMembers().size());
         assertEquals(userId, board.getMembers().get(0).getUserId());
+    }
+
+    private Board createBoard(String id, String name) {
+        return new Board(id, name);
     }
 }
