@@ -1,5 +1,0 @@
-# Created at 2024-11-30T11:34:59.205
-Boot Manifest-JAR contains absolute paths in classpath 'E:\Coding\posd2024f_term_project_notezkanban\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-
