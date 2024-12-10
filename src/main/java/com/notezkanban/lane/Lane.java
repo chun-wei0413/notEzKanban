@@ -60,12 +60,12 @@ public interface Lane {
         getChildren().add(swimLane);
     }
 
-    default void createCard(String description, CardType type) {
+    default void createCard(String description, CardType type, String boardId) {
         if (!getChildren().isEmpty()) {
             throw new LaneException("Cannot add cards to non-leaf lanes.");
         }
 
-        Card card = new Card(description, type);
+        Card card = new Card(description, type, boardId);
         addCard(card);
     }
 

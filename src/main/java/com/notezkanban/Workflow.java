@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class Workflow {
+    String boardId;
     String workflowId;
     String workflowName;
     //only allow stages to be added to the workflow
     List<Stage> stages;
 
-    public Workflow(String workflowId, String workflowName) {
+    public Workflow(String boardId, String workflowId, String workflowName) {
         checkWorkflowName(workflowName);
+        this.boardId = boardId;
         this.workflowId = workflowId;
         this.workflowName = workflowName;
         stages = new ArrayList<>();
@@ -63,6 +65,7 @@ public class Workflow {
     public void moveCard(Lane source, Lane destination, Card card){
         source.deleteCard(card);
         destination.addCard(card);
+        EventBus.getInstance().publish(new DomainEvent(this.boardId, "Card moved from " + source.getLaneName() + " to " + destination.getLaneName()));
     }
 
     private void checkWorkflowName(String workflowName) {

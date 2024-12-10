@@ -1,8 +1,8 @@
-package com.notezkanban;
+package com.notezkanban.boardMember;
 
 public class BoardMember {
-    private String userId;
-    private BoardRole role;
+    private final String userId;
+    private final BoardRole role;
 
     public BoardMember(String userId, BoardRole role) {
         this.userId = userId;
