@@ -2,7 +2,7 @@ package com.notezkanban.boardMember;
 
 public class BoardMember {
     private final String userId;
-    private final BoardRole role;
+    private BoardRole role;
 
     public BoardMember(String userId, BoardRole role) {
         this.userId = userId;
