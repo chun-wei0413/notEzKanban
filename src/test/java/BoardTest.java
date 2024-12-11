@@ -81,7 +81,7 @@ public class BoardTest {
         String workflowId = "workflowId";
         String workflowName = "workflowName";
 
-        Workflow workflow = new Workflow(workflowId, workflowName, board.getBoardId());
+        Workflow workflow = new Workflow(board.getBoardId(), workflowId, workflowName);
         board.addWorkflow(workflow);
         board.deleteWorkflow(workflowId);
 
