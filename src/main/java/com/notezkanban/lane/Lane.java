@@ -3,6 +3,7 @@ package com.notezkanban.lane;
 import com.notezkanban.card.Card;
 import com.notezkanban.card.CardType;
 import com.notezkanban.lane.exception.LaneException;
+import com.notezkanban.visitor.LaneVisitor;
 
 import java.util.*;
 
@@ -11,11 +12,10 @@ public interface Lane {
     String getLaneName();
     List<Lane> getChildren();
 
-    default Iterator<Lane> iterator() {
-        return getChildren().iterator();
-    }
+    Iterator<Lane> iterator();
 
     List<Card> getCards();
+    void accept(LaneVisitor visitor);
 
     default Lane getLaneById(String laneId){
         for(Lane lane : getChildren()) {
@@ -86,14 +86,6 @@ public interface Lane {
         return Optional.empty();
     }
 
-    default int getTotalCardCount() {
-        int totalCardCount = getCards().size();
-        for (Lane lane : getChildren()) {
-            //use recursion to get total card count
-            totalCardCount += lane.getTotalCardCount();
-        }
-        return totalCardCount;
-    }
 
     default int getExpediteCardCount() {
         int count = (int) getCards().stream()
