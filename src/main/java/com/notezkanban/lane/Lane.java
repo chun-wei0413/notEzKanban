@@ -2,6 +2,7 @@ package com.notezkanban.lane;
 
 import com.notezkanban.card.Card;
 import com.notezkanban.card.CardType;
+import com.notezkanban.iterator.DFSLaneIterator;
 import com.notezkanban.lane.exception.LaneException;
 import com.notezkanban.visitor.LaneVisitor;
 
@@ -13,6 +14,10 @@ public interface Lane {
     List<Lane> getChildren();
 
     Iterator<Lane> iterator();
+
+    default Iterator<Lane> dfsIterator() {
+        return new DFSLaneIterator(this);
+    }
 
     List<Card> getCards();
     void accept(LaneVisitor visitor);
