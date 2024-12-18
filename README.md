@@ -25,6 +25,48 @@ Team members:
 ## Technique
 
 ## Design Patterns in Our Code
-
+### Composite
+- Motivation:
+看板系統中，每個 Stage 或 SwimLane 都是一種 Lane，且每個 Lane 中可能包含多個 Lane。
+- Solution:
+使用 Composite pattern 表達 Lane 與 Lane 之間的關係。
+- Consequence:
+  - client 不用關心它正在操作的是單個 Lane 還是組合 Lane。
+  - 添加新功能時，只需在 Lane interface 中添加 default method 即可，而不需要修改 concrete class。
+  - 易於擴展新的 Lane 類型。
+### Builder
+- Motivation:
+  由於 Lane 有多個屬性，用 constructor 建構時參數很多，導致可讀性很差。
+- Solution:
+  使用 Builder pattern 透過 Method Chaining 的方式設置屬性以避免傳入過多參數時造成混亂。
+- Consequence:
+  - 利用 builder 去統一產生複雜的物件。
+  - 透過 Method Chaining 方法，可以選擇性設置某些參數，而不用處理 overloading。
+### Iterator
+- Motivation:
+  由於 Lane 是 composite 的，當我們要取得所有卡片數量時，需要遍歷這個樹狀結構。
+- Solution:
+  使用 Iterator pattern ，每個 object 提供自己的 iterator，而外部只需要一個統一的 interface。
+- Consequence:
+  - 簡化遍歷邏輯，提供統一的 interface。
+  - 外部只需與 iterator 互動，而不用知道內部具體實作。
+  - 可以透過實作多種 iterator，實現不同遍歷方式。
+### Visitor
+- Motivation:
+  將計算所有卡片等等的邏輯直接定義在 Workflow 類別中，導致職責過重，且不易擴展新的操作。
+- Solution:
+  使用 Visitor pattern 將邏輯抽到另一個類別中，讓操作邏輯和 entity 分離。
+- Consequence:
+  - 易於擴展新操作。
+  - 不需修改原有的程式。
+  - 統一操作多個類別。
+  - 集中操作邏輯，易於維護，可讀性高。
+### Template method
+- Motivation:
+  
+- Solution:
+  
+- Consequence:
+  
 ## ref
 [ezKanban](https://gitlab.com/TeddyChen/ezkanban_2020)
