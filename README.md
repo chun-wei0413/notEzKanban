@@ -48,7 +48,7 @@ Team members:
 - Solution:
   使用 Iterator pattern ，每個 object 提供自己的 iterator，而外部只需要一個統一的 interface。
 - Consequence:
-  - 簡化遍歷邏輯，提供統一的 interface。
+  - 簡化遍歷邏輯。
   - 外部只需與 iterator 互動，而不用知道內部具體實作。
   - 可以透過實作多種 iterator，實現不同遍歷方式。
 ### Visitor
@@ -63,10 +63,35 @@ Team members:
   - 集中操作邏輯，易於維護，可讀性高。
 ### Template method
 - Motivation:
-  
+  生成報表時有固定的處理流程。
 - Solution:
-  
+  利用 template method 定義報表生成的標準流程 (generateChart)，子類別負責舉體的資料收集邏輯。
 - Consequence:
-  
+  - 可以讓所有圖表的生成過程保持一致，但數據收集的邏輯可以根據不同圖表類型進行客製化。
+### Strategy
+- Motivation:
+  生成報表後需要展示，由於報表的種類不同，展示的方式也有所不同。
+- Solution:
+  利用 Strategy pattern 定義一個 interface，用於報表的展示邏輯。每一個具體報表類別各自實現了如何展示數據的方法。
+- Consequence:
+  - 可以讓報表展示邏輯靈活替換，符合 OCP，新增新的展示方式時不會影響現有code。
+### Observer
+- Motivation:
+  當生成報表時，我們希望能通知其他使用者。
+- Solution:
+  利用 Observer pattern ，Notifier 作為訂閱者會通知其他使用者或是外部裝置。
+- Consequence:
+  - 同步資訊，傳送Kanban即時通知給該看板使用者。
+### Singleton
+- Motivation:
+如果 report 直接調用每一個 Notifier，它需要知道所有的通知邏輯和具體實現。導致系統難以擴展，每次增加一種 Notifier 都需要修改 Board 的代碼。
+- Solution:
+利用 Singleton pattern ，將 EventBus 作為事件發布者，統一將是件通知給每個 Notifier，再讓它們各自去執行具體的通知邏輯。
+- Consequence:
+  - 解耦事件的發布者與訂閱者。
+  - 一個事件可以被多個 Notifier 同時處理。
+  - 允許在系統運行時動態增加或移除事件的訂閱者，方便引入新的事件類型或新的處理邏輯，而不影響現有程式。
+  - EventBus 作為事件的中心節點，可以統一記錄、追蹤和分析系統中的事件流。
+  - 可以方便地加入日誌功能，用於監控或排查問題。
 ## ref
 [ezKanban](https://gitlab.com/TeddyChen/ezkanban_2020)
