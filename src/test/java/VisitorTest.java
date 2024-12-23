@@ -81,13 +81,13 @@ public class VisitorTest {
             "  Stage: Stage 1\n" +
             "    SwimLane: Swimlane 1\n" +
             "      Stage: Leaf 1\n" +
-            "        └─ Card: Task A (Standard)\n" +
+            "         Card: Task A (Standard)\n" +
             "    SwimLane: Swimlane 2\n" +
-            "      └─ Card: Urgent Fix (Expedite)\n";
+            "       Card: Urgent Fix (Expedite)\n";
 
         // 驗證輸出
         assertEquals(expected, result);
-        
+
         // 輸出實際結果以便查看
         System.out.println("Actual output:");
         System.out.println(result);

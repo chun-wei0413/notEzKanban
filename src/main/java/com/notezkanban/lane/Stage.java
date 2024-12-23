@@ -46,6 +46,6 @@ public class Stage implements Lane {
 
     @Override
     public void accept(LaneVisitor visitor) {
-        visitor.visitLane(this);
+        visitor.visitStage(this);
     }
 }

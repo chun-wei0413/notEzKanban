@@ -46,6 +46,6 @@ private String swimLaneId;
 
     @Override
     public void accept(LaneVisitor visitor) {
-        visitor.visitLane(this);
+        visitor.visitSwimLane(this);
     }
 }
