@@ -1,5 +1,6 @@
 import com.notezkanban.card.Card;
 import com.notezkanban.card.CardType;
+import com.notezkanban.lane.ExpediteLane;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
 import com.notezkanban.lane.exception.LaneException;
@@ -30,6 +31,25 @@ public class LaneTest {
 
         assertEquals("1-1", stage.getLaneById("1-1").getLaneId());
         assertEquals("1-1-1", stage.getLaneById("1-1").getLaneById("1-1-1").getLaneId());
+    }
+
+    @Test
+    public void testAddExpediteCard() {
+        ExpediteLane expediteLane = new ExpediteLane("1", "Expedite Lane");
+        Card expediteCard = new Card("Expedite Card", CardType.Expedite, "board1");
+
+        expediteLane.addCard(expediteCard);
+
+        assertEquals(1, expediteLane.getCards().size());
+        assertEquals(expediteCard, expediteLane.getCards().get(0));
+    }
+
+    @Test
+    public void testAddNonExpediteCardThrowsException() {
+        ExpediteLane expediteLane = new ExpediteLane("1", "Expedite Lane");
+        Card standardCard = new Card("Standard Card", CardType.Standard, "board1");
+
+        assertThrows(LaneException.class, () -> expediteLane.addCard(standardCard));
     }
 
     @Test
