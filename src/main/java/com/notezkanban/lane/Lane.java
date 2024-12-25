@@ -20,7 +20,7 @@ public interface Lane {
     }
 
     List<Card> getCards();
-    void accept(LaneVisitor visitor);
+    <T>void accept(LaneVisitor<T> visitor);
 
     default Lane getLaneById(String laneId){
         for(Lane lane : getChildren()) {
