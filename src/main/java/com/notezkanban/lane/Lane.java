@@ -91,7 +91,6 @@ public interface Lane {
         return Optional.empty();
     }
 
-
     default int getExpediteCardCount() {
         int count = (int) getCards().stream()
                 .filter(card -> card.getType() == CardType.Expedite)
