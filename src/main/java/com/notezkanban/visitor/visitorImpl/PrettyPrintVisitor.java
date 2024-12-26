@@ -2,6 +2,7 @@ package com.notezkanban.visitor.visitorImpl;
 
 import com.notezkanban.card.Card;
 import com.notezkanban.iterator.DFSLaneIterator;
+import com.notezkanban.lane.ExpediteLane;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
 import com.notezkanban.lane.SwimLane;
@@ -31,6 +32,11 @@ public class PrettyPrintVisitor implements LaneVisitor {
             Lane currentLane = iterator.next();
             printLaneWithIndent(currentLane, iterator.getDepth());
         }
+    }
+
+    @Override
+    public void visitExpediteLane(ExpediteLane expediteLane) {
+        printLaneWithIndent(expediteLane, 0);
     }
 
     private void printLaneWithIndent(Lane lane, int currentDepth) {

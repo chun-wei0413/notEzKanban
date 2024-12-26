@@ -2,6 +2,7 @@ package com.notezkanban.visitor.visitorImpl;
 
 import java.util.Iterator;
 
+import com.notezkanban.lane.ExpediteLane;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
 import com.notezkanban.lane.SwimLane;
@@ -26,6 +27,11 @@ public class TotalCardVisitor implements LaneVisitor {
         while (it.hasNext()) {
             it.next().accept(this);
         }
+    }
+
+    @Override
+    public void visitExpediteLane(ExpediteLane expediteLane) {
+        totalCardCount += expediteLane.getCards().size();
     }
 
     @Override

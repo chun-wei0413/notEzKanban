@@ -9,19 +9,24 @@ import com.notezkanban.visitor.LaneVisitor;
 import java.util.*;
 
 public interface Lane {
+    //tested
     String getLaneId();
+    //tested
     String getLaneName();
+    //tested
     List<Lane> getChildren();
-
+    //tested
+    int getWipLimit();
+    //tested
+    void setWipLimit(int limit);
+    //tested
     Iterator<Lane> iterator();
-
+    //tested
     default Iterator<Lane> dfsIterator() {
         return new DFSLaneIterator(this);
     }
 
-    List<Card> getCards();
-    <T>void accept(LaneVisitor<T> visitor);
-
+    //tested
     default Lane getLaneById(String laneId){
         for(Lane lane : getChildren()) {
             if (lane.getLaneId().equals(laneId)) {
@@ -31,8 +36,9 @@ public interface Lane {
         return null;
     }
 
+    //tested
     //notAllowStageAndSwimLaneInSameLane
-    default void createStage(String stageId, String stageName) {
+    default void createStage(String stageId, String stageName, int wipLimit) {
         for (Lane lane : getChildren()) {
             if (lane instanceof SwimLane) {
                 throw new LaneException("Cannot add a stage to a lane that contains swim lanes.");
@@ -42,14 +48,16 @@ public interface Lane {
         Lane stage = LaneBuilder.newInstance()
                 .laneId(stageId)
                 .laneName(stageName)
+                .wipLimit(wipLimit)
                 .stage()
                 .build();
 
         getChildren().add(stage);
     }
 
+    //tested
     //notAllowStageAndSwimLaneInSameLane
-    default void createSwimLane(String swimLaneId, String swimLaneName) {
+    default void createSwimLane(String swimLaneId, String swimLaneName, int wipLimit) {
         for (Lane lane : getChildren()) {
             if (lane instanceof Stage) {
                 throw new LaneException("Cannot add a stage to a lane that contains swim lanes.");
@@ -59,29 +67,37 @@ public interface Lane {
         Lane swimLane = LaneBuilder.newInstance()
             .laneId(swimLaneId)
             .laneName(swimLaneName)
+            .wipLimit(wipLimit)
             .swimLane()
             .build();
 
         getChildren().add(swimLane);
     }
 
-    default void createCard(String description, CardType type, String boardId) {
-        if (!getChildren().isEmpty()) {
-            throw new LaneException("Cannot add cards to non-leaf lanes.");
-        }
+    //tested
+    default void createExpediteLane(String expediteLaneId, String expediteLaneName) {
+        Lane expediteLane = LaneBuilder.newInstance()
+            .laneId(expediteLaneId)
+            .laneName(expediteLaneName)
+            .expediteLane()
+            .build();
 
-        Card card = new Card(description, type, boardId);
-        addCard(card);
+        getChildren().add(expediteLane);
     }
 
-    default void addCard(Card card) {
-        getCards().add(card);
-    }
 
+    //tested
+    List<Card> getCards();
+
+    //tested
+    void createCard(String description, CardType type, String boardId);
+
+    //tested
     default void deleteCard(Card card) {
         getCards().remove(card);
     }
 
+    //tested
     default Optional<Card> getCard(UUID id) {
         for (Card card : getCards()) {
             if (card.getId().equals(id)) {
@@ -91,6 +107,7 @@ public interface Lane {
         return Optional.empty();
     }
 
+    //tested
     default int getExpediteCardCount() {
         int count = (int) getCards().stream()
                 .filter(card -> card.getType() == CardType.Expedite)
@@ -103,4 +120,5 @@ public interface Lane {
         return count;
     }
 
+    <T>void accept(LaneVisitor<T> visitor);
 }
