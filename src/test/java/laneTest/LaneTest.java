@@ -78,13 +78,6 @@ public class LaneTest {
         }
 
         @Test
-        void testExpediteCardCount() {
-            stage.createCard("Standard Card", CardType.Standard, "board1");
-            stage.createCard("Expedite Card", CardType.Expedite, "board1");
-            assertEquals(1, stage.getExpediteCardCount());
-        }
-
-        @Test
         void testCreateStageAndSwimLane() {
             stage.createStage("stage2", "Testing", 2);
             assertThrows(LaneException.class, () -> 

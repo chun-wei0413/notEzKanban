@@ -1,88 +1,179 @@
-// import com.notezkanban.Board;
-// import com.notezkanban.EventBus;
-// import com.notezkanban.card.Card;
-// import com.notezkanban.card.CardType;
-// import com.notezkanban.lane.Stage;
-// import com.notezkanban.Workflow;
-// import com.notezkanban.notifier.Notifier;
-// import com.notezkanban.notifier.notifierImpl.EmailNotifier;
-// import com.notezkanban.notifier.notifierImpl.LineNotifier;
-// import org.junit.jupiter.api.Test;
-// import static org.mockito.Mockito.*;
 
 
-// import static org.junit.jupiter.api.Assertions.*;
+import com.notezkanban.Workflow;
+import com.notezkanban.card.Card;
+import com.notezkanban.card.CardType;
+import com.notezkanban.lane.Lane;
+import com.notezkanban.lane.LaneBuilder;
+import com.notezkanban.lane.Stage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Nested;
 
-// public class WorkflowTest {
-//     @Test
-//     public void createWorkflow() {
-//         Workflow workflow = createWorkflow("boardId", "workflowId", "workflowName");
+import static org.junit.jupiter.api.Assertions.*;
 
-//         assertEquals("workflowId", workflow.getWorkflowId());
-//         assertEquals("workflowName", workflow.getWorkflowName());
-//     }
+public class WorkflowTest {
+    private Workflow workflow;
+    
+    @BeforeEach
+    void setUp() {
+        workflow = new Workflow("board1", "workflow1", "Development Flow");
+    }
 
-//     @Test
-//     public void renameWorkflow() {
-//         Workflow workflow = createWorkflow("boardId", "workflowId", "workflowName");
+    @Nested
+    class WorkflowBasicOperations {
+        @Test
+        void createWorkflow() {
+            assertEquals("workflow1", workflow.getWorkflowId());
+            assertEquals("Development Flow", workflow.getWorkflowName());
+            assertTrue(workflow.getLanes().isEmpty());
+        }
 
-//         workflow.rename("newWorkflowName");
+        @Test
+        void renameWorkflow() {
+            workflow.rename("New Flow Name");
+            assertEquals("New Flow Name", workflow.getWorkflowName());
+        }
 
-//         assertEquals("newWorkflowName", workflow.getWorkflowName());
-//     }
+        @Test
+        void renameWorkflowWithInvalidName() {
+            assertThrows(IllegalArgumentException.class, () -> workflow.rename(""));
+            assertThrows(IllegalArgumentException.class, () -> workflow.rename("   "));
+        }
+    }
 
-//     @Test
-//     public void renameWorkflowWithEmptyName() {
-//         Workflow workflow = createWorkflow("boardId", "workflowId", "workflowName");
+    @Nested
+    class StageOperations {
+        @Test
+        void addStageToWorkflow() {
+            Stage stage = (Stage) LaneBuilder.newInstance()
+                .laneId("stage1")
+                .laneName("Development")
+                .stage()
+                .build();
 
-//         assertThrows(IllegalArgumentException.class, () -> workflow.rename(""));
-//     }
+            workflow.addRootStage(stage);
 
-//     @Test
-//     public void addStageToWorkflow() {
-//         Workflow workflow = createWorkflow("boardId", "workflowId", "workflowName");
-//         Stage rootStage = createRootStage("stageId", "stageName");
+            assertTrue(workflow.getLane("stage1").isPresent());
+            assertEquals("Development", workflow.getLane("stage1").get().getLaneName());
+        }
 
-//         workflow.addRootStage(rootStage);
+        @Test
+        void deleteStageFromWorkflow() {
+            Stage stage = (Stage) LaneBuilder.newInstance()
+                .laneId("stage1")
+                .laneName("Development")
+                .stage()
+                .build();
 
-//         assertEquals("stageName", workflow.getLane("stageId").get().getLaneName());
-//     }
+            workflow.addRootStage(stage);
+            workflow.deleteLane("stage1");
 
-//     @Test
-//     public void deleteStageFromWorkflow() {
-//         Workflow workflow = createWorkflow("boardId", "workflowId", "workflowName");
-//         Stage rootStage = createRootStage("stageId", "stageName");
+            assertFalse(workflow.getLane("stage1").isPresent());
+        }
 
-//         workflow.addRootStage(rootStage);
-//         workflow.deleteLane("stageId");
+        @Test
+        void addMultipleStages() {
+            Stage dev = (Stage) LaneBuilder.newInstance()
+                .laneId("dev")
+                .laneName("Development")
+                .stage()
+                .build();
 
-//         assertFalse(workflow.getLane("stageId").isPresent());
-//     }
+            Stage test = (Stage) LaneBuilder.newInstance()
+                .laneId("test")
+                .laneName("Testing")
+                .stage()
+                .build();
 
-//     @Test
-//     public void moveCard_ShouldMoveCardBetweenStages() {
-//         Workflow workflow = createWorkflow("boardId", "workflowId", "workflowName");
-//         Stage source = createRootStage("lane1", "source");
-//         Stage destination = createRootStage("lane2", "destination");
-//         Card card = new Card("cardId", CardType.Standard, "boardId");
+            workflow.addRootStage(dev);
+            workflow.addRootStage(test);
 
-//         workflow.addRootStage(source);
-//         workflow.addRootStage(destination);
-//         source.addCard(card);
+            assertEquals(2, workflow.getLanes().size());
+            assertTrue(workflow.getLane("dev").isPresent());
+            assertTrue(workflow.getLane("test").isPresent());
+        }
+    }
 
-//         assertTrue(source.getCard(card.getId()).isPresent());
+    @Nested
+    class CardOperations {
+        private Stage sourceStage;
+        private Stage targetStage;
+        private Card card;
 
-//         workflow.moveCard(source, destination, card);
+        @BeforeEach
+        void setUp() {
+            sourceStage = (Stage) LaneBuilder.newInstance()
+                .laneId("source")
+                .laneName("Source")
+                .stage()
+                .build();
 
-//         assertFalse(source.getCard(card.getId()).isPresent());
-//         assertTrue(destination.getCard(card.getId()).isPresent());
-//     }
+            targetStage = (Stage) LaneBuilder.newInstance()
+                .laneId("target")
+                .laneName("Target")
+                .stage()
+                .build();
 
-//     private Workflow createWorkflow(String boardId, String workflowId, String name) {
-//         return new Workflow(boardId, workflowId, name);
-//     }
+            workflow.addRootStage(sourceStage);
+            workflow.addRootStage(targetStage);
+            
+            // 創建並添加卡片
+            sourceStage.createCard("Test Task", CardType.Standard, "board1");
+            card = sourceStage.getCards().get(0);
+        }
 
-//     private Stage createRootStage(String id, String name) {
-//         return new Stage(id, name);
-//     }
-// }
+        @Test
+        void moveCardBetweenStages() {
+            workflow.moveCard(sourceStage, targetStage, card);
+
+            assertTrue(sourceStage.getCards().isEmpty());
+            assertFalse(targetStage.getCards().isEmpty());
+            assertEquals(1, targetStage.getCards().size());
+            assertEquals("Test Task", targetStage.getCards().get(0).getDescription());
+        }
+
+        @Test
+        void moveCardWithinSameStage() {
+            workflow.moveCard(sourceStage, sourceStage, card);
+
+            assertEquals(1, sourceStage.getCards().size());
+            assertEquals("Test Task", sourceStage.getCards().get(0).getDescription());
+        }
+    }
+
+    @Nested
+    class LaneOperations {
+        private Stage rootStage;
+
+        @BeforeEach
+        void setUp() {
+            rootStage = (Stage) LaneBuilder.newInstance()
+                .laneId("root")
+                .laneName("Root Stage")
+                .stage()
+                .build();
+            workflow.addRootStage(rootStage);
+        }
+
+        @Test
+        void createNestedStructure() {
+            rootStage.createSwimLane("swim1", "Swim Lane 1", 5);
+            Lane swimLane = rootStage.getLaneById("swim1");
+            swimLane.createStage("nested", "Nested Stage", 3);
+
+            assertNotNull(rootStage.getLaneById("swim1"));
+            assertNotNull(swimLane.getLaneById("nested"));
+        }
+
+        @Test
+        void createExpediteLane() {
+            rootStage.createExpediteLane("exp1", "Expedite Lane");
+            
+            Lane expediteLane = rootStage.getLaneById("exp1");
+            assertNotNull(expediteLane);
+            assertEquals("Expedite Lane", expediteLane.getLaneName());
+            assertEquals(1, expediteLane.getWipLimit());
+        }
+    }
+}

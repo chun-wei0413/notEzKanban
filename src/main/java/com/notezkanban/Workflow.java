@@ -23,19 +23,23 @@ public class Workflow {
         stages = new ArrayList<>();
     }
 
+    //tested
     public String getWorkflowName() {
         return workflowName;
     }
 
+    //tested
     public void rename(String newWorkflowName) {
         checkWorkflowName(newWorkflowName);
         workflowName = newWorkflowName;
     }
 
+    //tested
     public String getWorkflowId() {
         return workflowId;
     }
 
+    //tested
     public Optional<Stage> getLane(String laneId) {
         for (Stage stage : stages) {
             if (stage.getLaneId().equals(laneId)) {
@@ -45,10 +49,12 @@ public class Workflow {
         return Optional.empty();
     }
 
+    //tested
     public void addRootStage(Stage stage) {
         stages.add(stage);
     }
 
+    //tested
     public void deleteLane(String laneId) {
         for (Stage stage : stages) {
             if (stage.getLaneId().equals(laneId)) {
@@ -58,10 +64,12 @@ public class Workflow {
         }
     }
 
+    //tested
     public List<Stage> getLanes() {
         return this.stages;
     }
 
+    //tested
     public void moveCard(Lane source, Lane destination, Card card){
         source.deleteCard(card);
         destination.createCard(card.getDescription(), card.getType(), card.getBoardId());

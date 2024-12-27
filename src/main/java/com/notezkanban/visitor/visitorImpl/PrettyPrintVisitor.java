@@ -40,24 +40,21 @@ public class PrettyPrintVisitor implements LaneVisitor {
     }
 
     private void printLaneWithIndent(Lane lane, int currentDepth) {
-        // 打印縮進
         for (int i = 0; i < currentDepth; i++) {
             result.append(INDENT);
         }
         
-        // 打印當前 Lane
         result.append(lane.getClass().getSimpleName())
              .append(": ")
              .append(lane.getLaneName())
              .append("\n");
 
-        // 打印卡片
         if (!lane.getCards().isEmpty()) {
             for (Card card : lane.getCards()) {
                 for (int i = 0; i < currentDepth + 1; i++) {
                     result.append(INDENT);
                 }
-                result.append(" Card: ")
+                result.append("Card: ")
                      .append(card.getDescription())
                      .append(" (")
                      .append(card.getType())

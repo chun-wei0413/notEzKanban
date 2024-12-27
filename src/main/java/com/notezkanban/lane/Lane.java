@@ -107,18 +107,5 @@ public interface Lane {
         return Optional.empty();
     }
 
-    //tested
-    default int getExpediteCardCount() {
-        int count = (int) getCards().stream()
-                .filter(card -> card.getType() == CardType.Expedite)
-                .count();
-
-        for (Lane child : getChildren()) {
-            count += child.getExpediteCardCount();
-        }
-
-        return count;
-    }
-
     <T>void accept(LaneVisitor<T> visitor);
 }
