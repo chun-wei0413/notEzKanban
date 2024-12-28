@@ -1,5 +1,7 @@
 package com.notezkanban.chart;
 
+import java.util.Map;
+
 import com.notezkanban.Workflow;
 
 public abstract class ChartGenerator<T extends Chart> {
@@ -11,14 +13,9 @@ public abstract class ChartGenerator<T extends Chart> {
     }
 
     public final T generateChart() {
-        collectData();
-        
         ChartData chartData = getCollectedData();
-        
         return createChart(chartData);
     }
-
-    protected abstract void collectData();
 
     protected abstract ChartData getCollectedData();
     

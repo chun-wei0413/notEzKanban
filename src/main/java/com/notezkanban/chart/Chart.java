@@ -22,9 +22,9 @@ public class Chart {
     public String getTitle() {
         return title;
     }
-
+    
     public Map<String, Integer> getDistribution() {
-        return new HashMap<>(distribution); // 返回副本以保护内部数据
+        return new HashMap<>(distribution);
     }
 
     public String getWorkflowName() {

@@ -1,11 +1,15 @@
 package com.notezkanban;
 
 import com.notezkanban.card.Card;
+import com.notezkanban.chart.ChartData;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
+import com.notezkanban.visitor.visitorImpl.TotalCardVisitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Workflow {
@@ -74,6 +78,20 @@ public class Workflow {
         source.deleteCard(card);
         destination.createCard(card.getDescription(), card.getType(), card.getBoardId());
         EventBus.getInstance().publish(new DomainEvent(this.boardId, "Card moved from " + source.getLaneName() + " to " + destination.getLaneName()));
+    }
+
+    public ChartData collectDistributionChartData() {
+        Map<String, Integer> cardDistribution = new HashMap<>();
+        for (Stage stage : stages) {
+            TotalCardVisitor visitor = new TotalCardVisitor();
+            stage.accept(visitor);
+            cardDistribution.put(
+                stage.getLaneName(), 
+                visitor.getResult()
+            );
+        }
+        
+        return new ChartData(workflowName, cardDistribution);
     }
 
     private void checkWorkflowName(String workflowName) {
