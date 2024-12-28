@@ -52,6 +52,8 @@ private String swimLaneId;
 
         Card card = new Card(description, type, boardId);
         addCard(card);
+        // to record enter time of the card
+        card.enterStage(swimLaneId);
     }
 
     private void addCard(Card card) {
@@ -60,6 +62,8 @@ private String swimLaneId;
         }
 
         cards.add(card);
+        // to record enter time of the card
+        card.enterStage(swimLaneId);
     }
 
     @Override

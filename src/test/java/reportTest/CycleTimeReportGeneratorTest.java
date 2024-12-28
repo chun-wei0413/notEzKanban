@@ -1,67 +1,72 @@
+package reportTest;
+
 import com.notezkanban.Workflow;
+import com.notezkanban.card.Card;
 import com.notezkanban.card.CardType;
-import com.notezkanban.chart.Chart;
-import com.notezkanban.chart.DistributionChartGenerator;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.LaneBuilder;
 import com.notezkanban.lane.Stage;
+import com.notezkanban.report.CycleTimeReport;
+import com.notezkanban.report.CycleTimeReportGenerator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DistributionChartGeneratorTest {
+public class CycleTimeReportGeneratorTest {
     private Workflow workflow;
-    private DistributionChartGenerator generator;
+    private CycleTimeReportGenerator generator;
 
     @BeforeEach
     void setUp() {
         workflow = new Workflow("board1", "workflow1", "Development Flow");
-        generator = new DistributionChartGenerator(workflow);
+        generator = new CycleTimeReportGenerator(workflow);
     }
 
     @Nested
-    class BasicChartGenerationTests {
+    class BasicReportTests {
         @Test
-        void generateChartForEmptyWorkflow() {
-            Chart chart = generator.generateChart();
+        void generateReportForEmptyWorkflow() {
+            CycleTimeReport report = generator.generateReport();
             String expected = """
-                Distribution Chart - Development Flow
-                =====================================
-
-
-                Total cards: 0""";
-            assertEquals(expected, chart.toString());
+                Cycle Time Report - Development Flow
+                ========================================
+                """;
+            assertEquals(expected, report.toString());
         }
 
         @Test
-        void generateChartForSingleStage() {
+        void generateReportForSingleCard() throws InterruptedException {
             Stage stage = (Stage) LaneBuilder.newInstance()
                 .laneId("stage1")
                 .laneName("Development")
                 .stage()
                 .build();
-            
-            stage.createCard("Task 1", CardType.Standard, "board1");
+                
             workflow.addRootStage(stage);
+            
+            Card card = new Card("Task 1", CardType.Standard, "board1");
+            stage.createCard("Task 1", CardType.Standard, "board1");
+            stage.deleteCard(card);
 
-            Chart chart = generator.generateChart();
-            String expected = """
-                Distribution Chart - Development Flow
-                =====================================
+            CycleTimeReport report = generator.generateReport();
 
-                Development: 1 cards
-
-                Total cards: 1""";
-            assertEquals(expected, chart.toString());
+            String reportStr = report.toString();
+            
+            assertTrue(reportStr.contains("Cycle Time Report - Development Flow"));
+            assertTrue(reportStr.contains("Lane: Development"));
+            assertTrue(reportStr.contains("Card ID:"));
+            assertTrue(reportStr.contains("Cycle Time: 0.0 days"));
         }
     }
 
     @Nested
     class MultiStageTests {
         @Test
-        void generateChartForMultipleStages() {
+        void generateReportForMultipleStages() {
             Stage devStage = (Stage) LaneBuilder.newInstance()
                 .laneId("dev")
                 .laneName("Development")
@@ -73,30 +78,27 @@ public class DistributionChartGeneratorTest {
                 .laneName("Testing")
                 .stage()
                 .build();
-            
+                        
             devStage.createCard("Dev Task", CardType.Standard, "board1");
             testStage.createCard("Test Task", CardType.Standard, "board1");
             
             workflow.addRootStage(devStage);
             workflow.addRootStage(testStage);
 
-            Chart chart = generator.generateChart();
-            String expected = """
-                Distribution Chart - Development Flow
-                =====================================
-
-                Development: 1 cards
-                Testing: 1 cards
-
-                Total cards: 2""";
-            assertEquals(expected, chart.toString());
+            CycleTimeReport report = generator.generateReport();
+            String reportStr = report.toString();
+            
+            assertTrue(reportStr.contains("Lane: Development"));
+            assertTrue(reportStr.contains("Lane: Testing"));
+            assertTrue(reportStr.contains("Cycle Time: 0.0 days"));
+            assertTrue(reportStr.contains("Cycle Time: 0.0 days"));
         }
     }
 
     @Nested
     class NestedStructureTests {
         @Test
-        void generateChartForNestedLanes() {
+        void generateReportForNestedLanes() {
             Stage rootStage = (Stage) LaneBuilder.newInstance()
                 .laneId("root")
                 .laneName("Development")
@@ -105,23 +107,22 @@ public class DistributionChartGeneratorTest {
             
             rootStage.createSwimLane("swim1", "Team A", 5);
             Lane teamA = rootStage.getLaneById("swim1");
+
+            Card card = new Card("Team Task", CardType.Standard, "board1");
             teamA.createCard("Team Task", CardType.Standard, "board1");
-            
+            teamA.deleteCard(card);
+
             workflow.addRootStage(rootStage);
 
-            Chart chart = generator.generateChart();
-            String expected = """
-                Distribution Chart - Development Flow
-                =====================================
-
-                Development: 1 cards
-
-                Total cards: 1""";
-            assertEquals(expected, chart.toString());
+            CycleTimeReport report = generator.generateReport();
+            String reportStr = report.toString();
+            
+            assertTrue(reportStr.contains("Lane: Development"));
+            assertTrue(reportStr.contains("Cycle Time: 0.0 days"));
         }
 
         @Test
-        void generateChartForComplexStructure() {
+        void generateReportForComplexStructure() {
             Stage rootStage = (Stage) LaneBuilder.newInstance()
                 .laneId("root")
                 .laneName("Development")
@@ -142,15 +143,12 @@ public class DistributionChartGeneratorTest {
             
             workflow.addRootStage(rootStage);
 
-            Chart chart = generator.generateChart();
-            String expected = """
-                Distribution Chart - Development Flow
-                =====================================
-
-                Development: 2 cards
-
-                Total cards: 2""";
-            assertEquals(expected, chart.toString());
+            CycleTimeReport report = generator.generateReport();
+            String reportStr = report.toString();
+            
+            assertTrue(reportStr.contains("Lane: Development"));
+            assertTrue(reportStr.contains("Cycle Time: 0.0 days"));
+            assertTrue(reportStr.contains("Cycle Time: 0.0 days"));
         }
     }
 } 

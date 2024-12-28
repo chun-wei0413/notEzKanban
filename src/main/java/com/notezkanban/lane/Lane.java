@@ -3,6 +3,7 @@ package com.notezkanban.lane;
 import com.notezkanban.card.Card;
 import com.notezkanban.card.CardType;
 import com.notezkanban.iterator.DFSLaneIterator;
+import com.notezkanban.iterator.NullIterator;
 import com.notezkanban.lane.exception.LaneException;
 import com.notezkanban.visitor.LaneVisitor;
 
@@ -20,7 +21,9 @@ public interface Lane {
     //tested
     void setWipLimit(int limit);
     //tested
-    Iterator<Lane> iterator();
+    default Iterator<Lane> iterator() {
+        return new NullIterator();
+    }
     //tested
     default Iterator<Lane> dfsIterator() {
         return new DFSLaneIterator(this);
@@ -95,6 +98,7 @@ public interface Lane {
     //tested
     default void deleteCard(Card card) {
         getCards().remove(card);
+        card.exitStage(getLaneId());
     }
 
     //tested

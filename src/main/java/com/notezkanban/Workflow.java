@@ -1,16 +1,13 @@
 package com.notezkanban;
 
 import com.notezkanban.card.Card;
-import com.notezkanban.chart.ChartData;
+import com.notezkanban.report.ReportData;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.Stage;
+import com.notezkanban.visitor.visitorImpl.CardCycleTimeVisitor;
 import com.notezkanban.visitor.visitorImpl.TotalCardVisitor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Workflow {
     String boardId;
@@ -80,7 +77,7 @@ public class Workflow {
         EventBus.getInstance().publish(new DomainEvent(this.boardId, "Card moved from " + source.getLaneName() + " to " + destination.getLaneName()));
     }
 
-    public ChartData collectDistributionChartData() {
+    public ReportData collectDistributionChartData() {
         Map<String, Integer> cardDistribution = new HashMap<>();
         for (Stage stage : stages) {
             TotalCardVisitor visitor = new TotalCardVisitor();
@@ -91,8 +88,20 @@ public class Workflow {
             );
         }
         
-        return new ChartData(workflowName, cardDistribution);
+        return ReportData.forDistribution(workflowName, cardDistribution);
     }
+
+    public ReportData collectCycleTimeData() {
+        CardCycleTimeVisitor visitor = new CardCycleTimeVisitor();
+
+        for (Stage stage : stages) {
+            stage.accept(visitor);
+        }
+    
+        Map<String, Map<UUID, Double>> cycleTimeData = visitor.getResult();
+        return ReportData.forCycleTime(workflowName, cycleTimeData);
+    }
+
 
     private void checkWorkflowName(String workflowName) {
         if (workflowName.trim().isEmpty()) {

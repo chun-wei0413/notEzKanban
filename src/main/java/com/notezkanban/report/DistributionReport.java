@@ -1,14 +1,14 @@
-package com.notezkanban.chart;
+package com.notezkanban.report;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Chart {
+public class DistributionReport {
     private final String title;
     private final Map<String, Integer> distribution;
     private final String workflowName;
 
-    public Chart(ChartData data) {
+    public DistributionReport(ReportData data) {
         this.workflowName = data.getWorkflowName();
         this.distribution = data.getDistribution();
         this.title = generateTitle();
@@ -18,11 +18,6 @@ public class Chart {
         return "Distribution Chart - " + workflowName;
     }
 
-    // Getters for testing and data access
-    public String getTitle() {
-        return title;
-    }
-    
     public Map<String, Integer> getDistribution() {
         return new HashMap<>(distribution);
     }

@@ -3,6 +3,7 @@ package laneTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -200,6 +201,20 @@ public class LaneTest {
             assertEquals("substage1", dfsIterator.next().getLaneId());
             assertEquals("stage2", dfsIterator.next().getLaneId());
             assertFalse(dfsIterator.hasNext());
+        }
+
+        @Test
+        void testNullIterator() {
+            Lane stage1 = rootLane.getLaneById("stage1");
+            stage1.createExpediteLane("exp1", "Expedite");
+
+            Iterator<Lane> nullIterator = stage1.iterator();
+            assertTrue(nullIterator.hasNext());
+            assertEquals("exp1", nullIterator.next().getLaneId());
+            assertFalse(nullIterator.hasNext());
+            assertThrows(NoSuchElementException.class, () ->
+                nullIterator.next()
+            );
         }
     }
 
