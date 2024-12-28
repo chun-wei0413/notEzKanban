@@ -36,11 +36,6 @@ public class ExpediteLane implements Lane {
     }
 
     @Override
-    public Iterator<Lane> iterator() {
-        return Collections.emptyIterator();
-    }
-
-    @Override
     public List<Card> getCards() {
         return cards;
     }
