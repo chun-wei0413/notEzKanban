@@ -20,7 +20,24 @@ Team members:
 此專題未來可以實作Kanban Game功能，讓使用者透過遊戲化的方式學習Kanban的概念，並透過遊戲的方式提升團隊的協作能力。透過Event紀錄Kanban的所有狀態，方便日後能夠回顧看板的所有活動。利用即時通訊軟體的Webhook功能，傳送Kanban即時通知給該看板使用者，讓使用者能在離線時通過手機得知看板資訊。
 
 ## Design Patterns Summary & Storyboard 
+### 因為Class Diagram有點大，所以細節的Diagram放在各個Pattern的中
+### Design Patterns Summary
+![Design Patterns Summary](img/Design patterns summary.PNG)
+### Storyboard
+Composite -> Builder -> Iterator -> Factory Method-> Visitor -> TemplateMethod
 
+1. Composite
+![story1](img/Storyboard/story1.PNG)
+2. Builder
+![story2](img/Storyboard/story2.PNG)
+3. Iterator
+![story3](img/Storyboard/story3.PNG)
+4. Factory Method
+![story4](img/Storyboard/story4.PNG)
+5. Visitor
+![story5](img/Storyboard/story5.PNG)
+6. Template Method
+![story6](img/Storyboard/story6.PNG)
 ## Design Patterns in Our Code
 ### Composite
 ![Composite](img/ClassDiagram-Composite.PNG)
