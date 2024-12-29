@@ -61,6 +61,7 @@ Team members:
   - 介面上使用default會讓日後新增concrete class忘記去override該method。
   - 不需要在leaf上實作iterator。
 ### Visitor
+![Visitor](img/ClassDiagram-Visitor.PNG)
 - Motivation:
   除了維護 Lane 結構、Card的操作的職責外，不希望像是增加計算卡片數量功能而去修改到介面本身。
 - Solution:
