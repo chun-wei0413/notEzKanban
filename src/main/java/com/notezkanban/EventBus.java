@@ -8,12 +8,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventBus {
-    private static final EventBus INSTANCE = new EventBus();
+    private static final EventBus INSTANCE = null;
     private final Map<String, List<Notifier>> boardTeams = new ConcurrentHashMap<>();
 
     private EventBus() {}
 
     public static EventBus getInstance() {
+        if (INSTANCE == null) {
+            return new EventBus();
+        }
         return INSTANCE;
     }
 
