@@ -53,6 +53,15 @@ Team members:
   - 簡化遍歷邏輯。
   - 外部只需與 iterator 互動，而不用知道內部具體實作。
   - 可以透過實作多種 iterator，實現不同遍歷方式。
+### Factory Method
+![Factory Method](img/ClassDiagram-Factory Method.PNG)
+- Motivation:
+  非composite的concrete Lane不需要iterator traverse 自己。
+- Solution:
+  使用 Factory Method pattern ，在Lane介面上提供一個NullIterator，讓leaf取得NullIterator。
+- Consequence:
+  - 介面上使用default會讓日後新增concrete class忘記去override該method。
+  - 不需要在leaf上實作iterator。
 ### Visitor
 - Motivation:
   除了維護 Lane 結構、Card的操作的職責外，不希望像是增加計算卡片數量功能而去修改到介面本身。
