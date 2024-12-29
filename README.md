@@ -26,7 +26,7 @@ Team members:
 ### Storyboard
 Composite -> Builder -> Iterator -> Factory Method-> Visitor -> TemplateMethod
 
-1. Composite
+1. Composite <br>
 ![story1](img/Storyboard/story1.PNG)
 2. Builder
 ![story2](img/Storyboard/story2.PNG)
