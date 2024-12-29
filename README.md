@@ -42,19 +42,19 @@ Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
 ### Composite
 ![Composite](img/ClassDiagram-Composite.PNG)
 - Motivation:
-看板系統中，每個 Stage 或 SwimLane 都是一種 Lane，且每個 Lane 中可能包含多個 Lane。
+看板系統中，每個 Stage 、 SwimLane 、 ExpediteLane都是一種 Lane，且每個 Lane 中可能包含多個 Lane。
 - Solution:
 使用 Composite pattern 表達 Lane 與 Lane 之間的關係。
 - Consequence:
   - client 不用關心它正在操作的是單個 Lane 還是組合 Lane。
-  - 添加新功能時，只需在 Lane interface 中添加 default method 即可，而不需要修改 concrete class。
   - 易於擴展新的 Lane 類型。
+  - 新增功能可能會頻繁修改 Lane 介面。
 ### Builder
 ![Builder](img/ClassDiagram-Builder.PNG)
 - Motivation:
   由於 Lane 有多個屬性，用 constructor 建構時參數很多，導致可讀性很差。
 - Solution:
-  使用 Builder pattern 透過 Method Chaining 的方式設置屬性以避免傳入過多參數時造成混亂。
+  使用 Builder pattern 以避免傳入過多參數時造成混亂。
 - Consequence:
   - 利用 builder 去統一產生複雜的物件。
   - 透過 Method Chaining 方法，可以選擇性設置某些參數，而不用處理 constructor overloading。
@@ -80,13 +80,13 @@ Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
 ### Visitor
 ![Visitor](img/ClassDiagram-Visitor.PNG)
 - Motivation:
-  除了維護 Lane 結構、Card的操作的職責外，不希望像是增加計算卡片數量功能而去修改到介面本身。
+  除了維護 Lane 結構、Card的操作的職責外，不希望像是增加計算卡片數量功能而去修改到 Lane 介面本身。
 - Solution:
   使用 Visitor pattern 將其邏輯抽到另一個類別中，讓操作邏輯和類別本身分離。
 - Consequence:
   - 易於擴展新操作。
-  - 保持介面職責乾淨。
-  - 不需修改介面。
+  - 保持 Lane 介面職責乾淨。
+  - 不需因為新增功能而修改介面。
   - 集中操作邏輯，易於維護，可讀性高。
 ### Template method
 ![Template method](img/ClassDiagram-Template Method.PNG)
