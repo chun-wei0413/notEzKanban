@@ -9,6 +9,7 @@ import com.notezkanban.lane.Stage;
 import com.notezkanban.report.CycleTimeReport;
 import com.notezkanban.report.CycleTimeReportGenerator;
 
+import com.notezkanban.report.ReportGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CycleTimeReportGeneratorTest {
     private Workflow workflow;
-    private CycleTimeReportGenerator generator;
+    private ReportGenerator<CycleTimeReport> generator;
 
     @BeforeEach
     void setUp() {

@@ -7,6 +7,7 @@ import com.notezkanban.report.DistributionReportGenerator;
 import com.notezkanban.lane.Lane;
 import com.notezkanban.lane.LaneBuilder;
 import com.notezkanban.lane.Stage;
+import com.notezkanban.report.ReportGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DistributionReportGeneratorTest {
     private Workflow workflow;
-    private DistributionReportGenerator generator;
+    private ReportGenerator<DistributionReport> generator;
 
     @BeforeEach
     void setUp() {
