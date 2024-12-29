@@ -44,6 +44,7 @@ Team members:
   - 利用 builder 去統一產生複雜的物件。
   - 透過 Method Chaining 方法，可以選擇性設置某些參數，而不用處理 constructor overloading。
 ### Iterator
+![Iterator](img/ClassDiagram-Iterator.PNG)
 - Motivation:
   由於 Lane 是 composite 的結構，像是我們要取得所有卡片數量時，需要遍歷這個樹狀結構。
 - Solution:
