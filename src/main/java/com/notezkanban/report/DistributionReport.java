@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class DistributionReport {
     private final String title;
-    private final Map<String, Integer> distribution;
     private final String workflowName;
+    private final Map<String, Integer> distribution;
 
     public DistributionReport(ReportData data) {
         this.workflowName = data.getWorkflowName();
@@ -16,18 +16,6 @@ public class DistributionReport {
 
     private String generateTitle() {
         return "Distribution Chart - " + workflowName;
-    }
-
-    public Map<String, Integer> getDistribution() {
-        return new HashMap<>(distribution);
-    }
-
-    public String getWorkflowName() {
-        return workflowName;
-    }
-
-    public int getCardCount(String stageName) {
-        return distribution.getOrDefault(stageName, 0);
     }
 
     public int getTotalCards() {

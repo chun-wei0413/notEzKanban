@@ -18,14 +18,6 @@ public class CycleTimeReport {
         return "Cycle Time Chart - " + workflowName;
     }
 
-    public Map<String, Map<UUID, Double>> getCycleTimeData() {
-        return cycleTimeData;
-    }
-
-    public String getWorkflowName() {
-        return workflowName;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

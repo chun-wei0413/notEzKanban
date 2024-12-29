@@ -72,6 +72,7 @@ Team members:
   - 不需修改介面。
   - 集中操作邏輯，易於維護，可讀性高。
 ### Template method
+![Template method](img/ClassDiagram-Template Method.PNG)
 - Motivation:
   希望能夠reuse生成報表時的流程，但不同報表的資料收集邏輯不同。
 - Solution:
