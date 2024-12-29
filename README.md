@@ -24,7 +24,7 @@ Team members:
 ### Design Patterns Summary
 ![Design Patterns Summary](img/Design patterns summary.PNG)
 ### Storyboard
-Composite -> Builder -> Iterator -> Factory Method-> Visitor -> TemplateMethod
+Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
 
 1. Composite <br>
 ![story1](img/Storyboard/story1.PNG)
