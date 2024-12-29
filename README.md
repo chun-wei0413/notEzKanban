@@ -88,6 +88,7 @@ Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
   - 保持 Lane 介面職責乾淨。
   - 不需因為新增功能而修改介面。
   - 集中操作邏輯，易於維護，可讀性高。
+  - 如果要新增 Lane 的具體實作會破壞LaneVisitor的OCP。
 ### Template method
 ![Template method](img/ClassDiagram-Template Method.PNG)
 - Motivation:
