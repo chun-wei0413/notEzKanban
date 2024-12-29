@@ -25,7 +25,7 @@ Team members:
 
 ## Design Patterns in Our Code
 ### Composite
-![Composite](img/ClassDiagram-Composite.png)
+![Composite](img/ClassDiagram-Composite.PNG)
 - Motivation:
 看板系統中，每個 Stage 或 SwimLane 都是一種 Lane，且每個 Lane 中可能包含多個 Lane。
 - Solution:
