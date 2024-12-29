@@ -62,7 +62,6 @@ public class Board {
         Objects.requireNonNull(workflow, "Workflow cannot be null");
         workflows.add(workflow);
 
-        EventBus.getInstance().publish(new DomainEvent(this.boardId, "workflow added" + workflow.getWorkflowName()));
     }
 
     public void deleteWorkflow(String workflowId) {
@@ -72,7 +71,6 @@ public class Board {
         findWorkflowById(workflowId)
                 .ifPresent(workflows::remove);
 
-        EventBus.getInstance().publish(new DomainEvent(this.boardId, "workflow deleted" + workflow.getWorkflowName()));
     }
 
     public Optional<Workflow> findWorkflowById(String workflowId) {
@@ -87,7 +85,6 @@ public class Board {
         Objects.requireNonNull(boardMember, "Board member cannot be null");
         boardMembers.add(boardMember);
 
-        EventBus.getInstance().publish(new DomainEvent(this.boardId, "board member added" + boardMember.getUserId()));
     }
 
     public void removeBoardMember(BoardMember boardMember) {
@@ -97,7 +94,6 @@ public class Board {
         Objects.requireNonNull(boardMember, "Board member cannot be null");
         boardMembers.remove(boardMember);
 
-        EventBus.getInstance().publish(new DomainEvent(this.boardId, "board member removed" + userId));
     }
 
     // Validation

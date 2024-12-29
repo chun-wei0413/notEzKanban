@@ -74,7 +74,6 @@ public class Workflow {
     public void moveCard(Lane source, Lane destination, Card card){
         source.deleteCard(card);
         destination.createCard(card.getDescription(), card.getType(), card.getBoardId());
-        EventBus.getInstance().publish(new DomainEvent(this.boardId, "Card moved from " + source.getLaneName() + " to " + destination.getLaneName()));
     }
 
     public ReportData collectDistributionChartData() {
