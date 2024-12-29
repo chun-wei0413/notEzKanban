@@ -35,6 +35,7 @@ Team members:
   - 添加新功能時，只需在 Lane interface 中添加 default method 即可，而不需要修改 concrete class。
   - 易於擴展新的 Lane 類型。
 ### Builder
+![Builder](img/ClassDiagram-Builder.PNG)
 - Motivation:
   由於 Lane 有多個屬性，用 constructor 建構時參數很多，導致可讀性很差。
 - Solution:
