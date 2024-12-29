@@ -10,7 +10,7 @@ import com.notezkanban.lane.exception.LaneException;
 import com.notezkanban.visitor.LaneVisitor;
 
 public class SwimLane implements Lane {
-private String swimLaneId;
+    private String swimLaneId;
     private String swimLaneName;
     private List<Lane> children;
     private List<Card> cards;

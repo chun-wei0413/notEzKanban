@@ -61,6 +61,11 @@ public class ExpediteLane implements Lane {
     }
 
     @Override
+    public void createExpediteLane(String expediteLaneId, String expediteLaneName) {
+        throw new LaneException("Cannot create expedite lane in Expedite Lane");
+    }
+
+    @Override
     public void accept(LaneVisitor visitor) {
         visitor.visitExpediteLane(this);
     }
