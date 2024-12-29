@@ -14,12 +14,10 @@ Team members:
 
 ## Description
 本專題將著重在以 Java 開發一個簡單的 Kanban 系統，負責管理團隊的工作流程。這個系統首先需要具備任務卡片管理的能力，
-首先要能夠讓使用者創建、編輯、刪除卡片，並透過拖放操作將卡片移動到不同的工作階段（如「待辦事項」、「進行中」和「已完成」）。第二個是透過通知機制提醒該看板成員看板的狀態變化。第三個是可以提供工作進度的報告，讓團隊成員能夠清楚地了解工作的進展情況，並及時調整工作優先順序。
+首先要能夠讓使用者創建、編輯、刪除卡片，並透過拖放操作將卡片移動到不同的工作階段（如「待辦事項」、「進行中」和「已完成」）。第二個是可以提供看板資訊報告，讓團隊成員能夠清楚地了解工作的進展情況，並及時調整工作優先順序。
 
 ## Future
 此專題未來可以實作Kanban Game功能，讓使用者透過遊戲化的方式學習Kanban的概念，並透過遊戲的方式提升團隊的協作能力。透過Event紀錄Kanban的所有狀態，方便日後能夠回顧看板的所有活動。利用即時通訊軟體的Webhook功能，傳送Kanban即時通知給該看板使用者，讓使用者能在離線時通過手機得知看板資訊。
-
-## Technique
 
 ## Design Patterns Summary & Storyboard 
 
@@ -74,29 +72,11 @@ Team members:
   - 集中操作邏輯，易於維護，可讀性高。
 ### Template method
 - Motivation:
-  生成報表時有固定的處理流程。
+  希望能夠reuse生成報表時的流程，但不同報表的資料收集邏輯不同。
 - Solution:
-  利用 template method 定義報表生成的標準流程 (generateChart)，子類別負責具體的資料收集邏輯。
+  利用 template method 定義報表生成的標準流程 (generateReport)，子類別負責具體的資料收集邏輯。
 - Consequence:
-  - 可以讓所有圖表的生成過程保持一致，但數據收集的邏輯可以根據不同圖表類型進行客製化。
-
-### Observer
-- Motivation:
-  當生成報表時，我們希望能通知其他使用者。
-- Solution:
-  利用 Observer pattern ，Notifier 作為訂閱者會通知其他使用者或是外部裝置。
-- Consequence:
-  - 同步資訊，傳送Kanban即時通知給該看板使用者。
-### Singleton
-- Motivation:
-如果 report 直接調用每一個 Notifier，它需要知道所有的通知邏輯和具體實現。導致系統難以擴展，每次增加一種 Notifier 都需要修改 Board 的代碼。
-- Solution:
-利用 Singleton pattern ，將 EventBus 作為事件發布者，統一將是件通知給每個 Notifier，再讓它們各自去執行具體的通知邏輯。
-- Consequence:
-  - 解耦事件的發布者與訂閱者。
-  - 一個事件可以被多個 Notifier 同時處理。
-  - 允許在系統運行時動態增加或移除事件的訂閱者，方便引入新的事件類型或新的處理邏輯，而不影響現有程式。
-  - EventBus 作為事件的中心節點，可以統一記錄、追蹤和分析系統中的事件流。
-  - 可以方便地加入日誌功能，用於監控或排查問題。
+  - 可以把 concrete ReportGenerator 重複的程式碼放到 superclass 裡 
+  - client被限制只能使用固定的流程，如果之後生成報表流程更改的話就會破壞抽象層的OCP
 ## ref
 [ezKanban](https://gitlab.com/TeddyChen/ezkanban_2020)
