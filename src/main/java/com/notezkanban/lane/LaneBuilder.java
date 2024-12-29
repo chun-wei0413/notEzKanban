@@ -6,10 +6,6 @@ public class LaneBuilder {
     private Integer wipLimit;
     private LaneType laneType;
 
-    private enum LaneType {
-        STAGE, SWIM_LANE, EXPEDITE
-    }
-
     public static LaneBuilder newInstance() {
         return new LaneBuilder();
     }
