@@ -1,5 +1,7 @@
 # Pattern Oriented Software Design - Term project
 
+### 更改項目: 
+  1. 新增Sequence Diagram(12/30 13:12:04)
 ## notEzKanban
 
 Team members:
