@@ -47,7 +47,7 @@ Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
 ## Design Patterns in Our Code
 ### Composite
 ![Composite](img/ClassDiagram-Composite.PNG)
-![Sequence Diagram](img/sequence/composite&builder.png)
+![Sequence Diagram](img/sequence/newComposite.png)
 - Motivation:
 看板系統中，每個 Stage 、 SwimLane 、 ExpediteLane都是一種 Lane，且每個 Lane 中可能包含多個 Lane。
 - Solution:
@@ -59,7 +59,7 @@ Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
 ### Builder
 ![Builder](img/ClassDiagram-Builder.PNG)
 ![Method Chaining](img/method chaining.PNG)
-![Sequence Diagram](img/sequence/composite&builder.png)
+![Sequence Diagram](img/sequence/builder.png)
 - Motivation:
   由於 Lane 有多個屬性，用 constructor 建構時參數很多，導致可讀性很差。
 - Solution:
@@ -93,7 +93,7 @@ Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
   - 可以透過實作多種 iterator，實現不同遍歷方式。
 ### Factory Method
 ![Factory Method](img/ClassDiagram-Factory Method.PNG)
-![Sequence Diagram](img/sequence/template&factory.png)
+![Sequence Diagram](img/sequence/newTemplate.png)
 - Motivation:
   非composite的concrete Lane不需要iterator traverse 自己。
 - Solution:
@@ -103,7 +103,7 @@ Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
   - 不需要在leaf上實作iterator。
 ### Template method
 ![Template method](img/ClassDiagram-Template Method.PNG)
-![Sequence Diagram](img/sequence/template&factory.png)
+![Sequence Diagram](img/sequence/newTemplate.png)
 - Motivation:
   希望能夠reuse生成報表時的流程，但不同報表的資料收集邏輯不同。
 - Solution:
