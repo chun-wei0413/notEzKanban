@@ -3,6 +3,8 @@
 ### 更改項目: 
   1. 新增Sequence Diagram(12/30 13:12:04)
   2. 新增demo.png in Description(1/2 13:44)
+  3. 新增一張method chaing圖片在Builder部分、修改StoryBoard pattern出現的順序、修改Pattern Summary and StoryBoard的class diagram，
+     BoardMember和BoardRole之間的關係。(1/5 15:28)
 ## notEzKanban
 
 Team members:
@@ -28,17 +30,17 @@ Team members:
 ### Design Patterns Summary
 ![Design Patterns Summary](img/Design patterns summary.PNG)
 ### Storyboard
-Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
+Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
 
 1. Composite <br>
 ![story1](img/Storyboard/story1.PNG)
 2. Builder
 ![story2](img/Storyboard/story2.PNG)
-3. Iterator
+3. Visitor
 ![story3](img/Storyboard/story3.PNG)
-4. Factory Method
+4. Iterator
 ![story4](img/Storyboard/story4.PNG)
-5. Visitor
+5. Factory Method
 ![story5](img/Storyboard/story5.PNG)
 6. Template Method
 ![story6](img/Storyboard/story6.PNG)
@@ -56,6 +58,7 @@ Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
   - 新增功能可能會頻繁修改 Lane 介面。
 ### Builder
 ![Builder](img/ClassDiagram-Builder.PNG)
+![Method Chaining](img/method chaining.PNG)
 ![Sequence Diagram](img/sequence/composite&builder.png)
 - Motivation:
   由於 Lane 有多個屬性，用 constructor 建構時參數很多，導致可讀性很差。
@@ -64,6 +67,19 @@ Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
 - Consequence:
   - 利用 builder 去統一產生複雜的物件。
   - 透過 Method Chaining 方法，可以選擇性設置某些參數，而不用處理 constructor overloading。
+### Visitor
+![Visitor](img/ClassDiagram-Visitor.PNG)
+![Sequence Diagram](img/sequence/Visitor.png)
+- Motivation:
+  除了維護 Lane 結構、Card的操作的職責外，不希望像是增加計算卡片數量功能而去修改到 Lane 介面本身。
+- Solution:
+  使用 Visitor pattern 將其邏輯抽到另一個類別中，讓操作邏輯和類別本身分離。
+- Consequence:
+  - 易於擴展新操作。
+  - 保持 Lane 介面職責乾淨。
+  - 不需因為新增功能而修改介面。
+  - 集中操作邏輯，易於維護，可讀性高。
+  - 如果要新增 Lane 的具體實作會破壞LaneVisitor的OCP。
 ### Iterator
 ![Iterator](img/ClassDiagram-Iterator.PNG)
 ![Sequence Diagram](img/sequence/Iterator.png)
@@ -85,19 +101,6 @@ Composite -> Builder -> Iterator -> Factory Method-> Visitor -> Template Method
 - Consequence:
   - 介面上使用default會讓日後新增concrete class忘記去override該method。
   - 不需要在leaf上實作iterator。
-### Visitor
-![Visitor](img/ClassDiagram-Visitor.PNG)
-![Sequence Diagram](img/sequence/Visitor.png)
-- Motivation:
-  除了維護 Lane 結構、Card的操作的職責外，不希望像是增加計算卡片數量功能而去修改到 Lane 介面本身。
-- Solution:
-  使用 Visitor pattern 將其邏輯抽到另一個類別中，讓操作邏輯和類別本身分離。
-- Consequence:
-  - 易於擴展新操作。
-  - 保持 Lane 介面職責乾淨。
-  - 不需因為新增功能而修改介面。
-  - 集中操作邏輯，易於維護，可讀性高。
-  - 如果要新增 Lane 的具體實作會破壞LaneVisitor的OCP。
 ### Template method
 ![Template method](img/ClassDiagram-Template Method.PNG)
 ![Sequence Diagram](img/sequence/template&factory.png)
