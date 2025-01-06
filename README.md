@@ -3,8 +3,10 @@
 ### 更改項目: 
   1. 新增Sequence Diagram(12/30 13:12:04)
   2. 新增demo.png in Description(1/2 13:44)
-  3. 新增一張method chaing圖片在Builder部分、修改StoryBoard pattern出現的順序、修改Pattern Summary and StoryBoard的class diagram，
+  3. 新增一張method chaining圖片在Builder部分、修改StoryBoard pattern出現的順序、修改Pattern Summary and StoryBoard的class diagram，
      BoardMember和BoardRole之間的關係。(1/5 15:28)
+  4. 修改composite sequence diagram & template method sequence diagram。(1/5 22:32)
+  5. 修改template method sequence diagram。 (1/6 13:21) 
 ## notEzKanban
 
 Team members:
@@ -93,7 +95,7 @@ Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
   - 可以透過實作多種 iterator，實現不同遍歷方式。
 ### Factory Method
 ![Factory Method](img/ClassDiagram-Factory Method.PNG)
-![Sequence Diagram](img/sequence/newTemplate.png)
+![Sequence Diagram](img/sequence/template_factory.png)
 - Motivation:
   非composite的concrete Lane不需要iterator traverse 自己。
 - Solution:
@@ -103,7 +105,7 @@ Composite -> Builder -> Visitor -> Iterator -> Factory Method -> Template Method
   - 不需要在leaf上實作iterator。
 ### Template method
 ![Template method](img/ClassDiagram-Template Method.PNG)
-![Sequence Diagram](img/sequence/newTemplate.png)
+![Sequence Diagram](img/sequence/template_factory.png)
 - Motivation:
   希望能夠reuse生成報表時的流程，但不同報表的資料收集邏輯不同。
 - Solution:
